@@ -32,6 +32,19 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #002D62; border-radius: 10px; }
+        
+        .workflow-step { position: relative; }
+        .workflow-step:not(:last-child)::after {
+            content: "\f105";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cbd5e1;
+        }
+        @media (max-width: 768px) { .workflow-step:not(:last-child)::after { content: ""; } }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -47,15 +60,57 @@
                     </p>
                 </div>
                 <div class="text-right">
-                    <span class="text-[10px] font-bold bg-yellow-500 text-blue-900 px-3 py-1 rounded shadow-sm uppercase">Prokopim Tapin v3.5</span>
+                    <span class="text-[10px] font-bold bg-yellow-500 text-blue-900 px-3 py-1 rounded shadow-sm uppercase">Prokopim Tapin v3.6</span>
                 </div>
             </div>
         </header>
 
+        <!-- Alur Publikasi (Dibawah Header) -->
+        <div class="bg-white border-x border-b border-gray-200 p-4 md:p-6 shadow-sm">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
+                <div class="workflow-step flex items-center gap-3">
+                    <div class="w-8 h-8 shrink-0 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-edit text-blue-800 text-xs"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] font-bold text-gray-800 uppercase leading-none">1. Input</h5>
+                        <p class="text-[9px] text-gray-500 mt-1">Data Kegiatan</p>
+                    </div>
+                </div>
+                <div class="workflow-step flex items-center gap-3">
+                    <div class="w-8 h-8 shrink-0 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-yellow-700 text-xs"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] font-bold text-gray-800 uppercase leading-none">2. Checklist</h5>
+                        <p class="text-[9px] text-gray-500 mt-1">Kehadiran Pejabat</p>
+                    </div>
+                </div>
+                <div class="workflow-step flex items-center gap-3">
+                    <div class="w-8 h-8 shrink-0 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-magic text-purple-700 text-xs"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] font-bold text-gray-800 uppercase leading-none">3. Generate</h5>
+                        <p class="text-[9px] text-gray-500 mt-1">Narasi Otomatis</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 shrink-0 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-share-square text-green-700 text-xs"></i>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] font-bold text-gray-800 uppercase leading-none">4. Publikasi</h5>
+                        <p class="text-[9px] text-gray-500 mt-1">Salin & Posting</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <main class="bg-white shadow-lg border-x border-gray-200">
             <div class="grid grid-cols-1 lg:grid-cols-12">
                 
-                <!-- Kolom Kiri: Input Form (40%) -->
+                <!-- Kolom Kiri: Input Form (5/12) -->
                 <div class="lg:col-span-5 p-6 md:p-8 border-r border-gray-100 space-y-5">
                     <div class="flex items-center gap-2 mb-2">
                         <div class="h-6 w-1 bg-blue-900 rounded-full"></div>
@@ -118,7 +173,7 @@
                     </div>
                 </div>
 
-                <!-- Kolom Tengah: Checklist Kehadiran (35%) -->
+                <!-- Kolom Tengah: Checklist (4/12) -->
                 <div class="lg:col-span-4 p-6 md:p-8 bg-gray-50/50 border-r border-gray-100 space-y-4">
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
@@ -129,7 +184,7 @@
                     </div>
 
                     <div id="attendance-list" class="space-y-2 max-h-[600px] overflow-y-auto pr-2">
-                        <!-- Items will be injected by JS -->
+                        <!-- Pejabat akan muncul di sini via JS -->
                     </div>
 
                     <div>
@@ -138,7 +193,7 @@
                     </div>
                 </div>
 
-                <!-- Kolom Kanan: Preview (25%) -->
+                <!-- Kolom Kanan: Output (3/12) -->
                 <div class="lg:col-span-3 p-6 md:p-8 space-y-5">
                     <div class="flex items-center justify-between border-b pb-2">
                         <h2 class="font-title text-sm font-bold text-gray-700 uppercase tracking-wider">Hasil Akhir</h2>
@@ -167,12 +222,11 @@
             </div>
         </main>
         
-        <!-- Footer Profesional KOMPAK -->
+        <!-- Footer -->
         <footer class="prokopim-blue text-white rounded-b-2xl shadow-2xl overflow-hidden border-t-2 border-white/10">
-            <div class="max-w-7xl mx-auto px-6 py-10">
+            <div class="max-w-7xl mx-auto px-6 pt-10 pb-6">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                     
-                    <!-- Branding Section -->
                     <div class="md:col-span-1 space-y-4">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-[#FFD700] rounded-xl flex items-center justify-center shadow-lg">
@@ -188,7 +242,6 @@
                         </p>
                     </div>
 
-                    <!-- Contact/Info Section -->
                     <div class="space-y-4">
                         <h4 class="text-[10px] font-bold text-yellow-400 uppercase tracking-widest border-b border-white/10 pb-2">Kontak Instansi</h4>
                         <ul class="space-y-2 text-xs">
@@ -207,7 +260,6 @@
                         </ul>
                     </div>
 
-                    <!-- Quick Links/Tags -->
                     <div class="space-y-4">
                         <h4 class="text-[10px] font-bold text-yellow-400 uppercase tracking-widest border-b border-white/10 pb-2">Media Sosial</h4>
                         <div class="flex flex-wrap gap-2">
@@ -226,7 +278,6 @@
                         </div>
                     </div>
 
-                    <!-- System Info -->
                     <div class="space-y-4 text-right hidden md:block border-l border-white/10 pl-10">
                         <div class="bg-blue-800/40 p-3 rounded-xl inline-block text-left w-full border border-white/5">
                             <p class="text-[10px] text-blue-200 font-bold uppercase tracking-widest mb-1">Status Sistem</p>
@@ -234,25 +285,24 @@
                                 <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                                 <span class="text-[10px] font-bold text-white">Online & Stable</span>
                             </div>
-                            <p class="text-[9px] text-blue-100/40 leading-none">Environment: production_build_3.5</p>
+                            <p class="text-[9px] text-blue-100/40 leading-none">Environment: production_build_3.6</p>
                         </div>
                     </div>
-
                 </div>
-                
-                <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+
+                <div class="mt-8 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p class="text-[10px] text-blue-100/40 font-bold uppercase tracking-widest">
                         &copy; 2026 BAGIAN PROKOPIM SETDA TAPIN. ALL RIGHTS RESERVED.
                     </p>
                     <div class="flex gap-4">
-                        <span class="text-[9px] bg-white/10 px-3 py-1 rounded-full text-blue-100 font-bold tracking-widest">v3.5 FINAL</span>
+                        <span class="text-[9px] bg-white/10 px-3 py-1 rounded-full text-blue-100 font-bold tracking-widest">v3.6 FINAL BUILD</span>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- Notification Modal (Custom Alert) -->
+    <!-- Modal Konfirmasi Reset -->
     <div id="modal-confirm" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[9999] p-4">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
             <h3 class="font-title font-bold text-lg text-gray-800 mb-2">Konfirmasi Reset</h3>
@@ -392,7 +442,7 @@
 
             output += `Upaya sinergi ini merupakan komitmen Pemerintah Kabupaten Tapin dalam mewujudkan pelayanan terbaik bagi masyarakat. ✨\n\n`;
             output += `📸 FG. Dokpim Tapin (${fg})\n\n`;
-            output += `#KabupatenTapin #TapinTamasa #ProkopimTapin #BumiTamasa #KOMPAK #TapinMembangun #Kalsel`;
+            output += `#KabupatenTapin #TapinTamasa #ProkopimTapin #Tapinmaju #TapinMembangun #Kalsel`;
 
             const resultBox = document.getElementById('result-box');
             resultBox.innerText = output;
@@ -436,25 +486,20 @@
         }
 
         function executeResetAll() {
-            // 1. Reset Text Inputs & Textareas
             const textFields = ['in-pimpinan', 'in-aksi', 'in-konteks', 'in-sambutan', 'in-rincian', 'in-hadir-extra'];
             textFields.forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.value = '';
             });
 
-            // 2. Reset Select
             const fgSelect = document.getElementById('in-fg');
             if(fgSelect) fgSelect.selectedIndex = 0;
 
-            // 3. Reset Date to Today
             const dateInput = document.getElementById('in-tanggal');
             if(dateInput) dateInput.value = new Date().toISOString().split('T')[0];
 
-            // 4. Clear Attendance Chips
             clearAttendance();
 
-            // 5. Reset Result Box
             const resultBox = document.getElementById('result-box');
             resultBox.classList.add('text-gray-400');
             resultBox.classList.remove('text-gray-800');
@@ -464,7 +509,6 @@
                     <p>Belum ada rilis.</p>
                 </div>`;
 
-            // 6. Close Modal & Provide Feedback
             closeModal();
             
             const masterBtn = document.getElementById('btn-master-reset');
