@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOMPAK - Prokopim Setda Tapin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; min-height: 100vh; }
+        .font-title { font-family: 'Montserrat', sans-serif; }
+        .prokopim-blue { background-color: #002D62; }
+        .prokopim-gold { color: #FFD700; }
+        .btn-action { transition: all 0.2s ease; }
+        .btn-action:active { transform: scale(0.95); }
+        textarea::placeholder { font-style: italic; opacity: 0.5; }
+        #result-box { white-space: pre-wrap; word-break: break-word; }
+        
+        .attendance-chip {
+            transition: all 0.2s;
+            cursor: pointer;
+            user-select: none;
+        }
+        .attendance-chip.active {
+            background-color: #002D62;
+            color: white;
+            border-color: #002D62;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #002D62; border-radius: 10px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header KOMPAK -->
+        <header class="prokopim-blue text-white p-6 rounded-t-2xl shadow-xl border-b-4 border-[#FFD700]">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="font-title text-3xl font-bold tracking-tighter italic">KOMPAK</h1>
+                    <p class="text-[10px] md:text-xs font-medium tracking-widest opacity-80 uppercase mt-1">
+                        Komunikasi Publik Kegiatan Pimpinan
+                    </p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-bold bg-yellow-500 text-blue-900 px-3 py-1 rounded shadow-sm uppercase">Prokopim Tapin v3.5</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="bg-white shadow-lg border-x border-gray-200">
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                
+                <!-- Kolom Kiri: Input Form (40%) -->
+                <div class="lg:col-span-5 p-6 md:p-8 border-r border-gray-100 space-y-5">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="h-6 w-1 bg-blue-900 rounded-full"></div>
+                        <h2 class="font-title text-sm font-bold text-gray-700 uppercase tracking-wider">Formulir Rilis Kegiatan</h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Pimpinan Utama</label>
+                            <input id="in-pimpinan" type="text" placeholder="Bupati Tapin H. Yamani" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-900 outline-none text-sm font-semibold">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Detail Aksi & Lokasi</label>
+                            <textarea id="in-aksi" rows="2" placeholder="Menghadiri rapat paripurna di Gedung DPRD..." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-900 outline-none text-sm"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Tanggal Kegiatan</label>
+                                <input id="in-tanggal" type="date" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-900 outline-none text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Konteks Acara (Opsional)</label>
+                                <input id="in-konteks" type="text" placeholder="HUT Kabupaten, dsb." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-900 outline-none text-sm">
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                            <label class="block text-[10px] font-bold text-blue-900 uppercase mb-2">Sambutan Pimpinan (Opsional)</label>
+                            <textarea id="in-sambutan" rows="3" placeholder="Masukkan kutipan pimpinan..." class="w-full p-3 bg-white border border-blue-100 rounded-lg focus:ring-2 focus:ring-blue-900 outline-none text-sm italic"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Rincian Kegiatan</label>
+                            <textarea id="in-rincian" rows="3" placeholder="Paparan target kinerja triwulan pertama..." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-900 outline-none text-sm"></textarea>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Fotografer (FG)</label>
+                            <div class="relative">
+                                <select id="in-fg" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-900 outline-none text-sm cursor-pointer appearance-none">
+                                    <option value="" disabled selected>Pilih Fotografer...</option>
+                                    <option value="Abdurrakhman">Abdurrakhman</option>
+                                    <option value="Kaka Umar Dani">Kaka Umar Dani</option>
+                                    <option value="Mister Adhan">Mister Adhan</option>
+                                    <option value="Mas Rehan">Mas Rehan</option>
+                                    <option value="Bro Ando">Bro Ando</option>
+                                    <option value="Abang Bintang">Abang Bintang</option>
+                                    <option value="Bang Baim">Bang Baim</option>
+                                    <option value="Mang Gigit">Mang Gigit</option>
+                                    <option value="Indra Brugman">Indra Brugman</option>
+                                    <option value="Dokpim">Dokpim (Default)</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Tengah: Checklist Kehadiran (35%) -->
+                <div class="lg:col-span-4 p-6 md:p-8 bg-gray-50/50 border-r border-gray-100 space-y-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="h-6 w-1 bg-yellow-500 rounded-full"></div>
+                            <h2 class="font-title text-sm font-bold text-gray-700 uppercase tracking-wider">Daftar Kehadiran</h2>
+                        </div>
+                        <button onclick="clearAttendance()" class="text-[10px] font-bold text-red-500 hover:text-red-700 uppercase focus:outline-none focus:ring-2 focus:ring-red-200 rounded px-1 transition-all">Reset List</button>
+                    </div>
+
+                    <div id="attendance-list" class="space-y-2 max-h-[600px] overflow-y-auto pr-2">
+                        <!-- Items will be injected by JS -->
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2 ml-1">Tambahan Kehadiran Lain</label>
+                        <textarea id="in-hadir-extra" rows="2" placeholder="Sebutkan tamu lainnya di sini..." class="w-full p-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-900 outline-none text-xs"></textarea>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: Preview (25%) -->
+                <div class="lg:col-span-3 p-6 md:p-8 space-y-5">
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <h2 class="font-title text-sm font-bold text-gray-700 uppercase tracking-wider">Hasil Akhir</h2>
+                        <div class="flex gap-1">
+                            <button onclick="resetAll()" id="btn-master-reset" class="p-2 text-red-600 bg-red-50 rounded-lg border border-red-100 hover:bg-red-100 transition-colors" title="Reset Semua Form">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="result-box" class="bg-gray-100 p-4 rounded-2xl border border-gray-200 min-h-[400px] text-[13px] leading-relaxed text-gray-800 font-sans shadow-inner overflow-y-auto max-h-[500px]">
+                        <div id="placeholder-box" class="flex flex-col items-center justify-center h-full text-gray-400 opacity-50 text-center py-20">
+                            <i class="fas fa-bullhorn text-3xl mb-4"></i>
+                            <p>Belum ada rilis.</p>
+                        </div>
+                    </div>
+
+                    <button onclick="generateLensa()" class="w-full btn-action prokopim-blue text-white font-bold py-4 rounded-xl hover:bg-blue-800 shadow-md uppercase tracking-widest text-xs">
+                        <i class="fas fa-sync-alt mr-2 text-yellow-400"></i> Generate
+                    </button>
+
+                    <button onclick="copyToClip()" id="copy-btn" class="w-full btn-action px-6 py-4 text-xs font-bold bg-green-600 text-white rounded-xl hover:bg-green-700 shadow-md flex items-center justify-center gap-2">
+                        <i class="fas fa-copy"></i> SALIN NARASI
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer Profesional KOMPAK -->
+        <footer class="prokopim-blue text-white rounded-b-2xl shadow-2xl overflow-hidden border-t-2 border-white/10">
+            <div class="max-w-7xl mx-auto px-6 py-10">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                    
+                    <!-- Branding Section -->
+                    <div class="md:col-span-1 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-[#FFD700] rounded-xl flex items-center justify-center shadow-lg">
+                                <i class="fas fa-paper-plane text-blue-900 text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-title font-bold text-xl tracking-tighter italic leading-none">KOMPAK</h3>
+                                <p class="text-[9px] text-blue-200 uppercase tracking-[0.2em] font-semibold mt-1">Smart Public Relations</p>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-blue-100/60 leading-relaxed font-medium pr-4">
+                            Sistem Komunikasi Publik Internal terintegrasi untuk efisiensi publikasi kegiatan Pimpinan Daerah Kabupaten Tapin.
+                        </p>
+                    </div>
+
+                    <!-- Contact/Info Section -->
+                    <div class="space-y-4">
+                        <h4 class="text-[10px] font-bold text-yellow-400 uppercase tracking-widest border-b border-white/10 pb-2">Kontak Instansi</h4>
+                        <ul class="space-y-2 text-xs">
+                            <li class="flex items-center gap-3 text-blue-100/80">
+                                <i class="fas fa-map-marker-alt text-yellow-400 w-4"></i>
+                                <span>Jl. Brigjend H. Hasan Basry No. 01 Rantau</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-blue-100/80">
+                                <i class="fas fa-envelope text-yellow-400 w-4"></i>
+                                <span>prokopim@tapinkab.go.id</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-blue-100/80">
+                                <i class="fas fa-globe text-yellow-400 w-4"></i>
+                                <span>tapinkab.go.id</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Quick Links/Tags -->
+                    <div class="space-y-4">
+                        <h4 class="text-[10px] font-bold text-yellow-400 uppercase tracking-widest border-b border-white/10 pb-2">Media Sosial</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="#" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-blue-900 transition-all duration-300">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-blue-900 transition-all duration-300">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-blue-900 transition-all duration-300">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-blue-900 transition-all duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- System Info -->
+                    <div class="space-y-4 text-right hidden md:block border-l border-white/10 pl-10">
+                        <div class="bg-blue-800/40 p-3 rounded-xl inline-block text-left w-full border border-white/5">
+                            <p class="text-[10px] text-blue-200 font-bold uppercase tracking-widest mb-1">Status Sistem</p>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                                <span class="text-[10px] font-bold text-white">Online & Stable</span>
+                            </div>
+                            <p class="text-[9px] text-blue-100/40 leading-none">Environment: production_build_3.5</p>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-[10px] text-blue-100/40 font-bold uppercase tracking-widest">
+                        &copy; 2026 BAGIAN PROKOPIM SETDA TAPIN. ALL RIGHTS RESERVED.
+                    </p>
+                    <div class="flex gap-4">
+                        <span class="text-[9px] bg-white/10 px-3 py-1 rounded-full text-blue-100 font-bold tracking-widest">v3.5 FINAL</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notification Modal (Custom Alert) -->
+    <div id="modal-confirm" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[9999] p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <h3 class="font-title font-bold text-lg text-gray-800 mb-2">Konfirmasi Reset</h3>
+            <p class="text-sm text-gray-600 mb-6">Apakah Anda yakin ingin menghapus seluruh data yang telah diisi? Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-2 text-sm font-bold text-gray-500 bg-gray-100 rounded-xl hover:bg-gray-200">Batal</button>
+                <button onclick="executeResetAll()" class="flex-1 py-2 text-sm font-bold text-white bg-red-600 rounded-xl hover:bg-red-700">Ya, Hapus Semua</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Master Kehadiran
+        const masterAttendance = [
+            { id: 1, label: "Ketua PKK Hj. Faridah Yamani" },
+            { id: 2, label: "Ketua GOW Hj. Elya Hartati Juanda" },
+            { id: 3, label: "Sekretaris Daerah H. Unda Absori, S.H., MH" },
+            { id: 4, label: "Ketua DWP Tapin Ny. Mecca Herawati Fiqri Irmawan, A.Md" },
+            { id: 5, label: "Aspemkesra H Zainal Abidin" },
+            { id: 6, label: "Ketua DPRD Tapin Achmad Riduan Syah" },
+            { id: 7, label: "Wkl. Ketua Komisi I DPRD Tapin H. Taufik Hidayat, SM., MM" },
+            { id: 8, label: "Asisten Administrasi Umum H. Fiqri Irmawan, S.STP" },
+            { id: 9, label: "Staf Ahli" },
+            { id: 10, label: "Tenaga Ahli" },
+            { id: 11, label: "Staf Khusus Bupati" },
+            { id: 12, label: "Kepala Bappelitbang Dr. Meidy Haris Prayoga" },
+            { id: 13, label: "Dandim 1010 Tapin Letkol Inf Dimas Yamma Putra, S.Sos" },
+            { id: 14, label: "Ketua Baznas Tapin Noor Ipansyah, S.Ag., MM" },
+            { id: 15, label: "Kepala SKPD Lingkup Pemerintah Kabupaten Tapin" }
+        ];
+
+        let selectedAttendance = [];
+
+        function formatDisplayDate(dateStr) {
+            if (!dateStr) return "[Waktu]";
+            const dateObj = new Date(dateStr);
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const dayName = days[dateObj.getDay()];
+            
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const year = String(dateObj.getFullYear()).slice(-2);
+            
+            return `${dayName} (${day}/${month}/${year})`;
+        }
+
+        function initChecklist() {
+            const container = document.getElementById('attendance-list');
+            container.innerHTML = masterAttendance.map(item => `
+                <div onclick="toggleAttendance(${item.id})" id="chip-${item.id}" class="attendance-chip border border-gray-200 bg-white p-2 rounded-lg text-[11px] font-medium flex items-center justify-between hover:border-blue-300">
+                    <span>${item.label}</span>
+                    <i class="fas fa-check-circle opacity-0 transition-opacity"></i>
+                </div>
+            `).join('');
+            
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('in-tanggal');
+            if(dateInput) dateInput.value = today;
+        }
+
+        function toggleAttendance(id) {
+            const chip = document.getElementById(`chip-${id}`);
+            const icon = chip.querySelector('i');
+            
+            if (selectedAttendance.includes(id)) {
+                selectedAttendance = selectedAttendance.filter(item => item !== id);
+                chip.classList.remove('active', 'border-blue-900');
+                icon.classList.add('opacity-0');
+            } else {
+                selectedAttendance.push(id);
+                chip.classList.add('active', 'border-blue-900');
+                icon.classList.remove('opacity-0');
+            }
+        }
+
+        function clearAttendance() {
+            selectedAttendance = [];
+            document.querySelectorAll('.attendance-chip').forEach(chip => {
+                chip.classList.remove('active', 'border-blue-900', 'bg-[#002D62]', 'text-white');
+                const icon = chip.querySelector('i');
+                if(icon) icon.classList.add('opacity-0');
+            });
+            const extraHadir = document.getElementById('in-hadir-extra');
+            if(extraHadir) extraHadir.value = '';
+        }
+
+        function generateLensa() {
+            const pimpinan = document.getElementById('in-pimpinan').value || "[Nama Pimpinan]";
+            const aksi = document.getElementById('in-aksi').value || "[Kegiatan]";
+            const tanggalRaw = document.getElementById('in-tanggal').value;
+            const konteks = document.getElementById('in-konteks').value;
+            const sambutan = document.getElementById('in-sambutan').value;
+            const rincian = document.getElementById('in-rincian').value;
+            const extraHadir = document.getElementById('in-hadir-extra').value;
+            const fg = document.getElementById('in-fg').value || "Dokpim";
+
+            const waktuDisplay = formatDisplayDate(tanggalRaw);
+            const konteksSuffix = konteks ? `, dalam rangka ${konteks}` : "";
+
+            let listHadir = selectedAttendance.map(id => {
+                const item = masterAttendance.find(m => m.id === id);
+                return item ? item.label : '';
+            });
+
+            if (extraHadir && extraHadir.trim() !== "") {
+                listHadir.push(extraHadir.trim());
+            }
+
+            let output = `Lensa Kegiatan 📸\n`;
+            output += `${pimpinan} ${aksi}, ${waktuDisplay}${konteksSuffix}.\n\n`;
+
+            if (sambutan && sambutan.trim() !== "") {
+                const sapaanPimpinan = pimpinan.split(' ').slice(0, 2).join(' ');
+                output += `Dalam kesempatan tersebut, ${sapaanPimpinan} menyampaikan:\n`;
+                output += `"${sambutan.trim()}"\n\n`;
+            }
+
+            if (rincian && rincian.trim() !== "") {
+                output += `Rincian kegiatan mencakup:\n`;
+                const lines = rincian.split('\n');
+                lines.forEach(line => {
+                    if (line.trim()) {
+                        const formattedLine = line.trim().startsWith('-') ? line.trim() : `- ${line.trim()}`;
+                        output += `${formattedLine}\n`;
+                    }
+                });
+                output += `\n`;
+            }
+
+            if (listHadir.length > 0) {
+                output += `Dihadiri oleh:\n`;
+                listHadir.forEach(h => {
+                    output += `- ${h}\n`;
+                });
+                output += `\n`;
+            }
+
+            output += `Upaya sinergi ini merupakan komitmen Pemerintah Kabupaten Tapin dalam mewujudkan pelayanan terbaik bagi masyarakat. ✨\n\n`;
+            output += `📸 FG. Dokpim Tapin (${fg})\n\n`;
+            output += `#KabupatenTapin #TapinTamasa #ProkopimTapin #BumiTamasa #KOMPAK #TapinMembangun #Kalsel`;
+
+            const resultBox = document.getElementById('result-box');
+            resultBox.innerText = output;
+            resultBox.classList.remove('text-gray-400');
+            resultBox.classList.add('text-gray-800');
+            
+            const placeholder = document.getElementById('placeholder-box');
+            if(placeholder) placeholder.style.display = 'none';
+        }
+
+        function copyToClip() {
+            const resultBox = document.getElementById('result-box');
+            if (resultBox.innerText.includes("Belum ada rilis")) return;
+            
+            const content = resultBox.innerText;
+            const textArea = document.createElement("textarea");
+            textArea.value = content;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            const btn = document.getElementById('copy-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> BERHASIL DISALIN';
+            btn.classList.replace('bg-green-600', 'bg-blue-900');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.classList.replace('bg-blue-900', 'bg-green-600');
+            }, 2000);
+        }
+
+        // Modal Logic
+        function resetAll() {
+            document.getElementById('modal-confirm').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-confirm').style.display = 'none';
+        }
+
+        function executeResetAll() {
+            // 1. Reset Text Inputs & Textareas
+            const textFields = ['in-pimpinan', 'in-aksi', 'in-konteks', 'in-sambutan', 'in-rincian', 'in-hadir-extra'];
+            textFields.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.value = '';
+            });
+
+            // 2. Reset Select
+            const fgSelect = document.getElementById('in-fg');
+            if(fgSelect) fgSelect.selectedIndex = 0;
+
+            // 3. Reset Date to Today
+            const dateInput = document.getElementById('in-tanggal');
+            if(dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+
+            // 4. Clear Attendance Chips
+            clearAttendance();
+
+            // 5. Reset Result Box
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('text-gray-400');
+            resultBox.classList.remove('text-gray-800');
+            resultBox.innerHTML = `
+                <div id="placeholder-box" class="flex flex-col items-center justify-center h-full text-gray-400 opacity-50 text-center py-20">
+                    <i class="fas fa-bullhorn text-3xl mb-4"></i>
+                    <p>Belum ada rilis.</p>
+                </div>`;
+
+            // 6. Close Modal & Provide Feedback
+            closeModal();
+            
+            const masterBtn = document.getElementById('btn-master-reset');
+            masterBtn.classList.replace('text-red-600', 'text-green-600');
+            setTimeout(() => masterBtn.classList.replace('text-green-600', 'text-red-600'), 1000);
+        }
+
+        window.onload = initChecklist;
+    </script>
+</body>
+</html>
